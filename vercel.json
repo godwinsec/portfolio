@@ -1,23 +1,15 @@
 {
-    "version": 2,
     "builds": [
-        {
-            "src": "api/index.py",
-            "use": "@vercel/python"
-        },
-        {
-            "src": "api/static.py",
-            "use": "@vercel/python"
-        }
+      {
+        "src": "godwin/wsgi.py",
+        "use": "@vercel/python",
+         "config": { "maxLambdaSize": "15mb", "runtime": "python3.10" }
+      }
     ],
     "routes": [
-        {
-            "src": "/static/(.*)",
-            "dest": "api/static.py"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "api/index.py"
-        }
+      {
+        "src": "/(.*)",
+        "dest": "godwin/wsgi.py"
+      }
     ]
-} 
+  }

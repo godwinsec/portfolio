@@ -1,0 +1,290 @@
+{% extends 'base.html'%} {% load static %} {% block content %}
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+  <div class="container">
+    <div class="row min-vh-100 align-items-center">
+      <!-- Image column: shown first on small screens -->
+      <div class="col-md-6 order-1 order-md-2 text-center">
+        <img
+          src="{% static 'main/images/godwin.jpeg' %}"
+          alt="picture of Godwin"
+          class="img-fluid w-90 w-md-50"
+          style="border-radius: 20px"
+        />
+      </div>
+
+      <!-- Text column: shown second on small screens -->
+      <div class="col-md-6 order-2 order-md-1 hero-text">
+        <h1 class="display-4 fw-bold">Godwin Ifeanyi Uche</h1>
+        <h2 class="lead mb-4">
+          Cybersecurity Student | AWS & Security+ Certified | Cisco CCNA
+        </h2>
+
+        <div class="d-flex flex-column flex-md-row gap-3">
+          <a href="{% url 'view_cv' %}" class="btn btn-primary" target="_blank">
+            <i class="fas fa-download me-2"></i>CV Herunterladen
+          </a>
+          <a
+            href="https://www.linkedin.com/in/godwin-ifeanyi-uche/"
+            class="btn btn-outline-light"
+            target="_blank"
+          >
+            <i class="fab fa-linkedin me-2"></i>LinkedIn
+          </a>
+          <a
+            href="https://github.com/godwinsec"
+            class="btn btn-outline-light"
+            target="_blank"
+          >
+            <i class="fab fa-github me-2"></i>GitHub
+          </a>
+          <a
+            href="https://www.xing.com/profile/GODWINIFEANYI_Uche/web_profiles"
+            class="btn btn-outline-light"
+            target="_blank"
+          >
+            <i class="fa-brands fa-xing"></i> Xing
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+
+<!-- Projects Section -->
+<section
+  id="projects"
+  class="bg-light"
+  style="background-image: url(/static/main/images/welcome.webp); padding: 5%"
+>
+  <div class="container">
+    <h2 class="section-title" style="color: #194b71">Projekte</h2>
+    <div class="row g-4">
+      <!-- Project Card 1 -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h3 class="card-title">Port Scanner with Python</h3>
+            <!-- <p class="card-text">Kurze Projektbeschreibung...</p> -->
+            <img
+              src="{% static 'main/images/port.webp' %}"
+              alt="image of binary code"
+              width="100%"
+            />
+            <div class="mb-3">
+              <span class="badge bg-primary">Python</span>
+              <span class="badge bg-primary">Socket</span>
+            </div>
+            <a
+              href="https://github.com/Godwinsec/Basic-Port-Scanner"
+              class="btn btn-outline-primary"
+              >GitHub Link</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h3 class="card-title">Threat Hunting</h3>
+            <!-- <p class="card-text">Kurze Projektbeschreibung...</p> -->
+            <img
+              src="{% static 'main/images/threat.jpg' %}"
+              alt="image of binary code"
+              width="100%"
+            />
+            <div class="mb-3">
+              <span class="badge bg-primary">Wireshark</span>
+              <span class="badge bg-primary">CyberChef</span>
+              <span class="badge bg-primary">Ettercap</span>
+            </div>
+            <a
+              href="https://github.com/godwinsec/Wireshark-for-Threat-Hunting"
+              class="btn btn-outline-primary"
+              >GitHub Link</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- more -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h3 class="card-title">Splunks Log Analysis</h3>
+            <!-- <p class="card-text">Kurze Projektbeschreibung...</p> -->
+            <img
+              src="{% static 'main/images/splunk.png' %}"
+              alt="image of binary code"
+              width="100%"
+            />
+            <div class="mb-3">
+              <span class="badge bg-primary">SEIM</span>
+            </div>
+            <a
+              href="https://github.com/Godwinsec/Splunk-SIEM-Log-Analysis-Projects"
+              class="btn btn-outline-primary"
+              >GitHub Link</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Add more project cards as needed -->
+    </div>
+    <p style="margin-top: 4%">
+      <a
+        href="https://github.com/godwinsec"
+        class="btn"
+        style="background-color: #194b71; color: white"
+        >More Project <i class="fa-solid fa-circle-arrow-right"></i
+      ></a>
+    </p>
+  </div>
+</section>
+
+<!-- Certifications Section -->
+<section
+  id="certifications"
+  class="section-padding"
+  style="background-color: whitesmoke"
+>
+  <div class="container">
+    <h2 class="section-title">Zertifizierungen</h2>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="cert-card text-center">
+          <img
+            src="{% static 'main/images/compt.webp' %}"
+            alt=""
+            width="150px"
+            height="150px"
+          />
+          <br />
+          <h3>CompTIA Security+</h3>
+          <!-- <p>Erworben:</p> -->
+        </div>
+      </div>
+      <!-- Add more certification cards -->
+      <div class="col-md-6 col-lg-4">
+        <div class="cert-card text-center">
+          <img
+            src="{% static 'main/images/ccna.png' %}"
+            alt=""
+            width="150px"
+            height="150px"
+          />
+          <br />
+          <h3>Cisco CCNA</h3>
+          <!-- <p>Erworben: [Datum]</p> -->
+        </div>
+      </div>
+      <!-- more here -->
+      <div class="col-md-6 col-lg-4">
+        <div class="cert-card text-center">
+          <img
+            src="{% static 'main/images/aws.png' %}"
+            alt=""
+            width="150px"
+            height="150px"
+          />
+          <br />
+          <h3>AWS CCP</h3>
+          <!-- <p>Erworben: [Datum]</p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="section-padding bg-light">
+  <div class="container">
+    <h2 class="section-title">Kontakt</h2>
+
+    <div class="row">
+      <div class="col-md-6">
+        <p class="mb-4">
+          Haben Sie Fragen oder möchten Sie mit mir in Kontakt treten? Füllen
+          Sie einfach das folgende Formular aus und ich melde mich so schnell
+          wie möglich bei Ihnen.
+        </p>
+        <img
+          src="{% static 'main/images/contact.svg' %}"
+          alt="Picture of happy customer"
+          width="70%"
+        />
+      </div>
+      <div class="col-lg-6">
+        <form action="https://formspree.io/f/mnnvqayr" method="POST">
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              name="Name"
+              placeholder="Name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <input
+              type="email"
+              class="form-control"
+              name="Email"
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <textarea
+              class="form-control"
+              name="Message"
+              rows="5"
+              placeholder="Nachricht"
+              required
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="btn text-white w-100 w-md-auto"
+            style="background-color: #2c3e50"
+          >
+            Nachricht Senden
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <hr />
+</section>
+
+<!-- <section
+      class="contact-us"
+      style="padding: 4% 10%; background-image: url(welcome.webp)"
+    >
+      <div class="container-fluid">
+        <div class="row justify-content-md-center">
+          <div class="col-12 col-sm-6">
+            <h2 class="mb-4 display-5 text-justify">Want To Chat?</h2>
+            <p class="text-secondary mb-5 text-justify">
+              Let's connect and start a conversation! Whether you have
+              questions, need support, or just want to say hi, I'm here to help.
+              Click the button below to get in touch and let's chat!
+            </p>
+            <p>
+              <a
+                href="https://www.linkedin.com/in/dama-michael-yohanna-2b9835230/"
+                class="btn btn-outline-secondary m-1"
+                >LinkedIn <i class="fa-brands fa-linkedin"></i
+              ></a>
+            </p>
+          </div>
+          <div class="col-sm-6">
+            <img src="chat.svg" alt="Picture of happy customer" width="100%" />
+          </div>
+        </div>
+        <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle" />
+      </div>
+    </section> -->
+
+{% endblock %}

@@ -12,5 +12,5 @@ def about(request):
     return render(request, 'main/about.html')
 
 def view_cv(request):
-    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'files', 'GCV.pdf')
+    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'files', 'GCV-june.pdf')
     return FileResponse(open(file_path, 'rb'), content_type='application/pdf')

@@ -152,16 +152,6 @@ body {
     overflow: hidden;
 }
 
-.birthday-title {
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    animation: bounce 2s infinite;
-}
-
-.name-title {
-    color: #ffe66d;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
 
 /* Floating Balloons Animation */
 .floating-balloons span {
@@ -236,33 +226,53 @@ body {
     border-radius: 10px;
 }
 
-.flame {
-    width: 15px;
-    height: 30px;
-    background: #ffd700;
-    position: absolute;
-    top: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 50% 50% 20% 20%;
-    animation: flicker 1s infinite;
+/* CSS for the blog listing Page */
+/* --------------------------------- */
+.entry2 h2 {
+  font-size: 24px;
+  /* background-color: transparent; */
+  font-weight: 700;
+  margin-top: 2%;
+}
+.entry2 a{
+  text-decoration: none;
+  color: #000;
+}
+.site-section{
+  padding-top:5% ;
 }
 
-/* Animations */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+.blog-detail{
+  padding: 4% 5%;
+  text-align: justify;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+.blog-detail h3{
+  color:#6d5b98;
+}
+.news-pic{
+  border-radius: 20px;
+  }
+  .news-pic{
+  width: 100%;
+  }
+  .latest{
+  margin: 4% 0px;
+  }
+  .news-block-title-link{
+    text-decoration: none;
+    color:#6d5b98;
+    font-size: 23px;
+  }
+@media only screen and (max-width: 600px) {
+  .blog-title{
+    font-size: 20px;
+  }
+  .news-block-title-link{
+    font-size: 19px;
+  }
 }
 
-@keyframes flicker {
-    0%, 100% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) scale(1.2); }
-}
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {

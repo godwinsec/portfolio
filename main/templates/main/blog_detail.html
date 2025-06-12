@@ -1,0 +1,121 @@
+{% extends 'main/base.html' %} {% load static %} {% block title %} Dama SoftWare
+Solution | {{post.slug}} {% endblock %} {% block content %}
+<section class="blog-detail">
+  <div class="row">
+    <div class="col-md-8">
+      <div>
+        <h1 class="blog-title">{{post.title}}</h1>
+        <div class="post-meta align-items-center text-left clearfix">
+          <figure class="author-figure mb-0 mr-3 float-left"></figure>
+          <img
+            src="{% static 'images/me.jpeg' %}"
+            alt="Image"
+            class="img-fluid px-2"
+            style="border-radius: 100%"
+          />
+          <span class="d-inline-block mt-1">
+            <span style="color: grey">By</span> {{post.author}}
+          </span>
+          <span>
+            &nbsp;-&nbsp;
+            <span style="color: grey">{{post.created_at}}</span>
+          </span>
+        </div>
+      </div>
+
+      <div style="margin: 3% 0%">
+        <img src="{{post.image.url}}" alt="post image" width="100%" />
+      </div>
+
+      <div class="froala-view">{{post.content|safe}}</div>
+
+      <!-- 👍 Like Button -->
+      <div class="mt-4">
+        <form method="post">
+          {% csrf_token %}
+          <button
+            type="submit"
+            name="like_submit"
+            class="btn btn-outline-primary btn-sm"
+          >
+            👍 Like ({{ total_likes }})
+          </button>
+        </form>
+      </div>
+
+      <!-- 💬 Comment Section -->
+      <div class="mt-5">
+        <h4>Comments ({{ comments|length }})</h4>
+        {% for comment in comments %}
+        <div class="border p-2 my-2 rounded">
+          <strong>{{ comment.name }}</strong><br />
+          <small class="text-muted"
+            >{{ comment.created_at|date:"M d, Y H:i" }}</small
+          >
+          <p class="mb-1 mt-1">{{ comment.text }}</p>
+        </div>
+        {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+      </div>
+
+      <!-- ✍️ Comment Form -->
+      <div class="mt-4">
+        <h5>Leave a Comment</h5>
+        <form method="post" class="mt-3">
+          {% csrf_token %}
+          <div class="form-group">
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              placeholder="Your name"
+              required
+            />
+          </div>
+          <div class="form-group mt-2">
+            <textarea
+              name="text"
+              class="form-control"
+              rows="3"
+              placeholder="Your comment"
+              required
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            name="comment_submit"
+            class="btn btn-primary btn-sm mt-2"
+          >
+            Post Comment
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-12 mx-auto" style="padding: 0%">
+      <h5 class="mt-2 mb-2">More Blog Post</h5>
+      {% for blog in more_post %}
+      <div class="row mx-0 latest">
+        <div class="col-6">
+          <a href="/blog/{{blog.slug}}">
+            <img src="{{blog.image.url}}" class="news-pic img-fluid" alt="" />
+          </a>
+        </div>
+        <div class="col-6">
+          <h6>
+            <a href="/blog/{{blog.slug}}" class="news-block-title-link">
+              {{blog.title}}
+            </a>
+          </h6>
+          <p>
+            <i class="bi-calendar4 custom-icon me-1"></i>
+            {{blog.date}}
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

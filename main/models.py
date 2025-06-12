@@ -8,7 +8,7 @@ class BlogPost(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     image = models.ImageField(upload_to='blog_images/')
     content = FroalaField()
-    author = models.CharField(max_length=100, default="Godwin Uche I.")
+    author = models.CharField(max_length=100, default="Godwin")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
 

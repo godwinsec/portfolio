@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import FileResponse
 import os
 from django.conf import settings
+from django.urls import reverse
 
 from main.forms import BlogForm
 
@@ -27,7 +28,7 @@ def about(request):
     return render(request, 'main/about.html')
 
 def view_cv(request):
-    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'files', 'GCV.pdf')
+    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'files', 'GCV-june.pdf')
     return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
 
 def blog_list(request):
@@ -69,6 +70,7 @@ def blog_add(request):
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            return redirect(reverse('blog_list'))
     else:
         form = BlogForm()
     context = {'form': form}

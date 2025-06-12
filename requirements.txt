@@ -2,6 +2,7 @@ Django>=4.2.0
 dj-database-url==2.3.0
 django-froala-editor==4.3.1
 django-storages==1.13.2
+python-dotenv==1.0.1
 psycopg2-binary==2.9.10
 whitenoise>=6.5.0 
 

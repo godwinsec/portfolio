@@ -67,10 +67,18 @@ def blog_detail(request, slug):
 
 def blog_add(request):
     if request.method == 'POST':
+        print("POST request received")
+        print("Files in request:", request.FILES)
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            print("Form is valid")
+            from django.core.files.storage import default_storage
+            print("Current storage backend:", default_storage.__class__.__name__)
+            blog_post = form.save()
+            print("Image URL:", blog_post.image.url)
             return redirect(reverse('blog_list'))
+        else:
+            print("Form errors:", form.errors)
     else:
         form = BlogForm()
     context = {'form': form}

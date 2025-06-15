@@ -2,11 +2,15 @@ from django.db import models
 from django.urls import reverse
 from froala_editor.fields import FroalaField
 from django.utils.text import slugify
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
-    image = models.ImageField(upload_to='blog_images/')
+    image = models.ImageField(
+        upload_to='blog_images/',
+        storage=MediaCloudinaryStorage()  # Explicitly set the storage
+    )
     content = FroalaField()
     author = models.CharField(max_length=100, default="Godwin")
     created_at = models.DateField(auto_now_add=True)

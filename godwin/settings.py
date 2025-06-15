@@ -29,14 +29,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-mt=@%n&2-7hn-p089$sxs^ab+g3l)56=&6&^0kvdeezc3c#8b)"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG') == 'True'
+# DEBUG = os.getenv('DEBUG') == 'True'
 
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['.vercel.app', 'www.godwin.ch', "godwin.ch" 'localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
+    'cloudinary',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -121,54 +124,52 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-if not DEBUG:
-    # aws settings
-    # AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-    # AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-    # AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_NAME_BUCKET')
-    # AWS_DEFAULT_ACL = None
-    # AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    # AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    # AWS_FILE_OVERIDE = False
-    # STORAGES = {
-    # "default": {'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage'},
-    # "staticfiles": {'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage'}
-    # }
+# Remove any existing MEDIA_URL and MEDIA_ROOT settings
+# and replace with this:
+MEDIA_URL = '/media/'  # This is just a prefix, Cloudinary will handle the actual URL
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-    # Database
-    # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    
-    STATIC_URL = "static/"
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'main', 'static'),
-    ]
-    DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
+# Make sure these are at the root level of settings.py, not inside any if/else blocks
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY': os.getenv("API_KEY"),
+    'API_SECRET': os.getenv('API_SECRET'),
+    'STATIC_TAG': 'static',
+    'MEDIA_TAG': 'media',
+    'INVALID_VIDEO_ERROR_MESSAGE': 'Please upload a valid video file.',
 }
-else:
+
+# This is the key setting that needs to be at the root level
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = f'https://res.cloudinary.com/{os.getenv("CLOUD_NAME")}/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+if not DEBUG:
+    # Production settings
     STATIC_URL = "static/"
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'main', 'static'),
+        os.path.join(BASE_DIR, 'main', 'static'),
     ]
-    # Media files
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-    # Database
-    # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
     DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'default': dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Development settings
+    STATIC_URL = "static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'main', 'static'),
+    ]
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 

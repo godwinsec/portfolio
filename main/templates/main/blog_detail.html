@@ -13,9 +13,7 @@ Solution | {{post.slug}} {% endblock %} {% block content %}
             class="img-fluid px-2"
             style="border-radius: 100%"
           />
-          <span class="d-inline-block mt-1">
-            <span style="color: grey">By</span> {{post.author}}
-          </span>
+          <span class="d-inline-block mt-1"> {{post.author}} </span>
           <span>
             &nbsp;-&nbsp;
             <span style="color: grey">{{post.created_at}}</span>

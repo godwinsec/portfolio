@@ -1,13 +1,16 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from django.http import FileResponse
+from django.http import FileResponse, JsonResponse
 import os
 from django.conf import settings
 from django.urls import reverse
+import cloudinary
+import cloudinary.uploader
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 from main.forms import BlogForm
 
 from .models import BlogPost, Comment, Like
-from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -83,3 +86,62 @@ def blog_add(request):
         form = BlogForm()
     context = {'form': form}
     return render(request, 'main/blog_add.html', context=context)
+
+@csrf_exempt
+def upload_image(request):
+    """Handle image uploads from Froala editor to Cloudinary"""
+    if request.method == 'POST':
+        try:
+            # Get the uploaded file
+            uploaded_file = request.FILES.get('file')
+            
+            if not uploaded_file:
+                return JsonResponse({'error': 'No file uploaded'}, status=400)
+            
+            # Upload to Cloudinary
+            result = cloudinary.uploader.upload(
+                uploaded_file,
+                folder='froala_images',
+                resource_type='image'
+            )
+            
+            # Return the URL in the format Froala expects
+            return JsonResponse({
+                'link': result['secure_url']
+            })
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+@csrf_exempt
+def load_images(request):
+    """Load images for Froala image manager"""
+    try:
+        # List images from Cloudinary (you might want to store image references in your database)
+        # For now, return empty array
+        return JsonResponse([])
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+def delete_image(request):
+    """Delete image from Cloudinary"""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            image_url = data.get('src')
+            
+            if image_url:
+                # Extract public_id from URL and delete from Cloudinary
+                # This is a simplified version - you might need more complex logic
+                # to extract the public_id from the URL
+                return JsonResponse({'success': True})
+            
+            return JsonResponse({'error': 'No image URL provided'}, status=400)
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)

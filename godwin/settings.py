@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
+import cloudinary
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -144,6 +145,12 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Configure Cloudinary
+cloudinary.config(
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('API_KEY'),
+    api_secret=os.getenv('API_SECRET')
+)
 
 if not DEBUG:
     # Production settings
@@ -174,4 +181,25 @@ else:
             ssl_require=True
         )
     }
+
+# Froala Editor Configuration
+FROALA_EDITOR_OPTIONS = {
+    'imageUploadURL': '/upload_image/',
+    'imageUploadParams': {
+        'type': 'image'
+    },
+    'imageManagerLoadURL': '/load_images/',
+    'imageManagerDeleteURL': '/delete_image/',
+    'imageManagerDeleteMethod': 'POST',
+    'imageManagerLoadMethod': 'GET',
+    'imageUploadMethod': 'POST',
+    'imageUploadToS3': False,
+    'imageUploadToCloudinary': True,
+    'imageUploadToCloudinaryOptions': {
+        'cloudName': os.getenv('CLOUD_NAME'),
+        'apiKey': os.getenv('API_KEY'),
+        'apiSecret': os.getenv('API_SECRET'),
+        'uploadPreset': 'ml_default',  # You can create a custom upload preset in Cloudinary
+    }
+}
 

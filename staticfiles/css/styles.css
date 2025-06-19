@@ -263,6 +263,12 @@ body {
     color:#6d5b98;
     font-size: 23px;
   }
+
+.froala-view img {
+  max-width: 100% !important; 
+  height: auto; /* Maintains the aspect ratio */
+  display: block; /* Prevents inline alignment issues */
+}
 @media only screen and (max-width: 600px) {
   .blog-title{
     font-size: 20px;

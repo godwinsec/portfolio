@@ -50,18 +50,21 @@
     </style>
 
     <!-- Open Graph Tags -->
+
     <meta
       property="og:title"
-      content="Godwin Uche | Cybersecurity Portfolio & Projects"
+      content="{%if post%} {{ post.title }} {% else %} Godwin Uche | Cybersecurity Portfolio & Projects {% endif%}"
     />
     <meta
       property="og:description"
-      content="Explore real-world projects in threat detection, network security, and SOC analysis by Godwin Ifeanyi Uche"
+      content="{%if post%}{{ post.content|truncatechars:150 }}{% else %} Explore real-world projects in threat detection, network security, and SOC analysis by Godwin Ifeanyi Uche {% endif%}"
     />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
     <meta
       property="og:image"
-      content="https://godwin.ch/static/images/godwin.jpeg"
+      content="{%if post%} {{ post.image.url }} {% else %} https://godwin.ch/static/images/godwin.jpegqq {% endif%}"
     />
+
     <meta property="og:url" content="https://godwin.ch/" />
     <meta property="og:type" content="website" />
 

@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
+import cloudinary
+
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,14 +30,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-mt=@%n&2-7hn-p089$sxs^ab+g3l)56=&6&^0kvdeezc3c#8b)"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = os.getenv('DEBUG') == 'True'
 
+DEBUG = False
 ALLOWED_HOSTS = ['.vercel.app', 'www.godwin.ch', "godwin.ch" 'localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
+    'cloudinary',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -39,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "main",
+    "froala_editor",
 ]
 
 MIDDLEWARE = [
@@ -73,17 +83,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "godwin.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -115,23 +114,92 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'main', 'static', 'main'),
-]
-
 # Enable WhiteNoise compression and caching
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Remove any existing MEDIA_URL and MEDIA_ROOT settings
+# and replace with this:
+MEDIA_URL = '/media/'  # This is just a prefix, Cloudinary will handle the actual URL
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Make sure these are at the root level of settings.py, not inside any if/else blocks
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY': os.getenv("API_KEY"),
+    'API_SECRET': os.getenv('API_SECRET'),
+    'STATIC_TAG': 'static',
+    'MEDIA_TAG': 'media',
+    'INVALID_VIDEO_ERROR_MESSAGE': 'Please upload a valid video file.',
+}
+
+# This is the key setting that needs to be at the root level
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Configure Cloudinary
+cloudinary.config(
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('API_KEY'),
+    api_secret=os.getenv('API_SECRET')
+)
+
+if not DEBUG:
+    # Production settings
+    STATIC_URL = "static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'main', 'static'),
+    ]
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Development settings
+    STATIC_URL = "static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'main', 'static'),
+    ]
+   
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+
+# Froala Editor Configuration
+FROALA_EDITOR_OPTIONS = {
+    'imageUploadURL': '/upload_image/',
+    'imageUploadParams': {
+        'type': 'image'
+    },
+    'imageManagerLoadURL': '/load_images/',
+    'imageManagerDeleteURL': '/delete_image/',
+    'imageManagerDeleteMethod': 'POST',
+    'imageManagerLoadMethod': 'GET',
+    'imageUploadMethod': 'POST',
+    'imageUploadToS3': False,
+    'imageUploadToCloudinary': True,
+    'imageUploadToCloudinaryOptions': {
+        'cloudName': os.getenv('CLOUD_NAME'),
+        'apiKey': os.getenv('API_KEY'),
+        'apiSecret': os.getenv('API_SECRET'),
+        'uploadPreset': 'ml_default',  # You can create a custom upload preset in Cloudinary
+    }
+}
+

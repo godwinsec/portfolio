@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}{% load static %} {% block content %}
+{{form.media}}
+<section style="padding: 5%; background-color: white">
+  <section>
+    <div>
+      <div class="row">
+        <div class="col-md-6"><h1>Write Blog Post</h1></div>
+        <div class="col-md-6 text-center">
+          <a
+            href="/"
+            style="text-decoration: none; font-weight: bold; color: black"
+            >Home</a
+          >
+          > Write Blog Post
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <form action="/blog/add" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}{{form.as_p}}
+      <input type="submit" value="post" class="btn btn-primary" />
+    </form>
+  </section>
+</section>
+{% endblock %}

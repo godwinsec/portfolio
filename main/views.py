@@ -13,7 +13,6 @@ from main.forms import BlogForm
 from .models import BlogPost, Comment, Like
 
 
-
 def get_client_ip(request):
     """Get IP address of client"""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -27,16 +26,21 @@ def get_client_ip(request):
 def index(request):
     return render(request, 'main/index.html')
 
+
 def about(request):
     return render(request, 'main/about.html')
 
+
 def view_cv(request):
-    file_path = os.path.join(settings.STATICFILES_DIRS[0], 'files', 'GCV-june.pdf')
+    file_path = os.path.join(
+        settings.STATICFILES_DIRS[0], 'files', 'Lebenslauf Godwin_Ifeanyi_Uche.pdf')
     return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+
 
 def blog_list(request):
     posts = BlogPost.objects.all().order_by('-created_at')
     return render(request, 'main/blog_list.html', {'posts': posts})
+
 
 @csrf_exempt
 def blog_detail(request, slug):
@@ -68,6 +72,7 @@ def blog_detail(request, slug):
     }
     return render(request, 'main/blog_detail.html', context)
 
+
 def blog_add(request):
     if request.method == 'POST':
         print("POST request received")
@@ -76,7 +81,8 @@ def blog_add(request):
         if form.is_valid():
             print("Form is valid")
             from django.core.files.storage import default_storage
-            print("Current storage backend:", default_storage.__class__.__name__)
+            print("Current storage backend:",
+                  default_storage.__class__.__name__)
             blog_post = form.save()
             print("Image URL:", blog_post.image.url)
             return redirect(reverse('blog_list'))
@@ -87,6 +93,7 @@ def blog_add(request):
     context = {'form': form}
     return render(request, 'main/blog_add.html', context=context)
 
+
 @csrf_exempt
 def upload_image(request):
     """Handle image uploads from Froala editor to Cloudinary"""
@@ -94,26 +101,27 @@ def upload_image(request):
         try:
             # Get the uploaded file
             uploaded_file = request.FILES.get('file')
-            
+
             if not uploaded_file:
                 return JsonResponse({'error': 'No file uploaded'}, status=400)
-            
+
             # Upload to Cloudinary
             result = cloudinary.uploader.upload(
                 uploaded_file,
                 folder='froala_images',
                 resource_type='image'
             )
-            
+
             # Return the URL in the format Froala expects
             return JsonResponse({
                 'link': result['secure_url']
             })
-            
+
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
-    
+
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
 
 @csrf_exempt
 def load_images(request):
@@ -125,6 +133,7 @@ def load_images(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
+
 @csrf_exempt
 def delete_image(request):
     """Delete image from Cloudinary"""
@@ -132,16 +141,16 @@ def delete_image(request):
         try:
             data = json.loads(request.body)
             image_url = data.get('src')
-            
+
             if image_url:
                 # Extract public_id from URL and delete from Cloudinary
                 # This is a simplified version - you might need more complex logic
                 # to extract the public_id from the URL
                 return JsonResponse({'success': True})
-            
+
             return JsonResponse({'error': 'No image URL provided'}, status=400)
-            
+
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
-    
+
     return JsonResponse({'error': 'Method not allowed'}, status=405)

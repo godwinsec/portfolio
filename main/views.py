@@ -33,7 +33,7 @@ def about(request):
 
 def view_cv(request):
     file_path = os.path.join(
-        settings.STATICFILES_DIRS[0], 'files', 'Lebenslauf Godwin Ifeanyi Uche.pdf')
+        settings.STATICFILES_DIRS[0], 'files', 'Lebenslau_Godwin_Ifeanyi_Uche.pdf')
     return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
 
 
